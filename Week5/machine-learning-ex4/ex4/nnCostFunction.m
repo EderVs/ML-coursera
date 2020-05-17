@@ -88,6 +88,25 @@ J /= m;
 % ----------------- Part 2 -----------------
 
 % ----------------- Part 3 -----------------
+regularization = 0;
+% Theta1
+[theta_j, theta_k] = size(Theta1);
+for j = 1:theta_j
+    for k = 1:(theta_k-1)
+        % We don't use the first theta. That's why we add 1 to k.
+        regularization += Theta1(j, k+1)^2;
+    endfor;
+endfor;
+% Theta2
+[theta_j, theta_k] = size(Theta2);
+for j = 1:theta_j
+    for k = 1:(theta_k-1)
+        % We don't use the first theta. That's why we add 1 to k.
+        regularization += Theta2(j, k+1)^2;
+    endfor;
+endfor;
+regularization *= (lambda / (2*m));
+J += regularization;
 
 % -------------------------------------------------------------
 
