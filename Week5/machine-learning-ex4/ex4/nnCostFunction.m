@@ -62,23 +62,32 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% ----------------- Part 1 -----------------
+[K, _] = size(Theta2);
+a1 = [ones(m, 1) X];
+z2 = a1 * Theta1';
+a2 = [ones(m, 1) sigmoid(z2)];
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
+h = a3;
 
+% For every example in X.
+for i = 1:m
+    % I think that this implementation is optimal.
+    for k = 1:K
+        if (k == y(i))
+            J += -log(h(i, k));
+        else
+            J += -log(1 - h(i, k));
+        endif;
+    endfor;
+endfor;
 
+J /= m;
 
+% ----------------- Part 2 -----------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+% ----------------- Part 3 -----------------
 
 % -------------------------------------------------------------
 
