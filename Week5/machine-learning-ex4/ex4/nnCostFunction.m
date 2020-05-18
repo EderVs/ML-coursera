@@ -63,13 +63,17 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 % ----------------- Part 1 -----------------
-[K, _] = size(Theta2);
+
+K = num_labels;
+y_bits = eye(K)(y, :);
+
 a1 = [ones(m, 1) X];
 z2 = a1 * Theta1';
 a2 = [ones(m, 1) sigmoid(z2)];
 z3 = a2 * Theta2';
 a3 = sigmoid(z3);
 h = a3;
+
 
 % For every example in X.
 for i = 1:m
@@ -86,23 +90,36 @@ endfor;
 J /= m;
 
 % ----------------- Part 2 -----------------
+% Backpropagation.
+
+% Output layer.
+d3 = (a3 - y_bits);
+% Hidden layer.
+% d2_i = (Theta2' * d3_i) .* a2(i, :)' .* (1-a2(i, :))';
+d2 = (d3*Theta2(:, 2:end)) .* sigmoidGradient(z2);
+% Adding to Gradient
+Theta1_grad = d2'*a1;
+Theta2_grad = d3'*a2;
+Theta1_grad = (1/m) * (Theta1_grad);
+Theta2_grad = (1/m) * (Theta2_grad);
 
 % ----------------- Part 3 -----------------
 regularization = 0;
 % Theta1
 [theta_j, theta_k] = size(Theta1);
 for j = 1:theta_j
-    for k = 1:(theta_k-1)
-        % We don't use the first theta. That's why we add 1 to k.
-        regularization += Theta1(j, k+1)^2;
+    for k = 2:theta_k
+        regularization += Theta1(j, k)^2;
+        Theta1_grad(j, k) += (lambda/m) * Theta1(j, k);
     endfor;
 endfor;
 % Theta2
 [theta_j, theta_k] = size(Theta2);
 for j = 1:theta_j
-    for k = 1:(theta_k-1)
+    for k = 2:theta_k
         % We don't use the first theta. That's why we add 1 to k.
-        regularization += Theta2(j, k+1)^2;
+        regularization += Theta2(j, k)^2;
+        Theta2_grad(j, k) += (lambda/m) * Theta2(j, k);
     endfor;
 endfor;
 regularization *= (lambda / (2*m));
