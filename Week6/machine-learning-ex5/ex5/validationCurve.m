@@ -40,6 +40,14 @@ error_val = zeros(length(lambda_vec), 1);
 %
 
 
+for i = 1:length(lambda_vec)
+    lambda = lambda_vec(i);
+    theta = trainLinearReg(X, y, lambda);
+    % Calculate training error.
+    [error_train(i), _] = linearRegCostFunction(X, y, theta, 0);
+    % Calculate Cross Val error.
+    [error_val(i), _] = linearRegCostFunction(Xval, yval, theta, 0);
+endfor;
 
 
 
