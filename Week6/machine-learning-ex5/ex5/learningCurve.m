@@ -53,12 +53,15 @@ error_val   = zeros(m, 1);
 
 % ---------------------- Sample Solution ----------------------
 
-
-
-
-
-
-
+for i = 1:m
+    actual_X = X(1:i, :);
+    actual_y = y(1:i);
+    theta = trainLinearReg(actual_X, actual_y, lambda);
+    % Calculate training error.
+    [error_train(i), _] = linearRegCostFunction(actual_X, actual_y, theta, 0);
+    % Calculate Cross Val error.
+    [error_val(i), _] = linearRegCostFunction(Xval, yval, theta, 0);
+endfor;
 
 % =========================================================================
 
