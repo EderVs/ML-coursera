@@ -21,10 +21,22 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
-
+m = length(X);
+for i = 1:m
+    x_i = X(i, :);
+    # Taking the first centroid as the min in the beginning.
+    closest_k = 1;
+    closest_k_d = sum((x_i - centroids(1, :)) .^ 2);
+    for k = 2:K
+        mu_k = centroids(k, :);
+        d = sum((x_i - mu_k) .^ 2);
+        if (d < closest_k_d)
+            closest_k = k;
+            closest_k_d = d;
+        endif;
+    endfor;
+    idx(i) = closest_k;
+endfor;
 
 
 % =============================================================
